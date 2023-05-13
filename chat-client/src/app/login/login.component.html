@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="wrapper">
+      <div class="title"><span>Login/Sign up Form</span></div>
+      <form [formGroup]="userloginForm">
+        <div class="row">
+          <input type="text" placeholder="User name" formControlName="userName" required>
+        </div>
+        <div class="row">
+          <input type="text" placeholder="Name" formControlName="name" required>
+        </div>
+        <div class="button">
+          <input type="submit" (click)="login()" value="Login">
+          <input type="submit" (click)="signup()" value="Sign Up">
+        </div>
+      </form>
+    </div>
+  </div>
