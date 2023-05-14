@@ -15,7 +15,7 @@
 }
 .wrapper .title{
   height: 90px;
-  background: #16a085;
+  background: cornflowerblue;
   border-radius: 5px 5px 0 0;
   color: #fff;
   font-size: 30px;
@@ -55,8 +55,8 @@ form .row input::placeholder{
   height: 100%;
   color: #fff;
   font-size: 18px;
-  background: #16a085;
-  border: 1px solid #16a085;
+  background: cornflowerblue;
+  border: 1px solid cornflowerblue;
   border-radius: 5px 0 0 5px;
   display: flex;
   align-items: center;
@@ -66,7 +66,7 @@ form .row input::placeholder{
   margin: -8px 0 20px 0;
 }
 .wrapper form .pass a{
-  color: #16a085;
+  color: cornflowerblue;
   font-size: 17px;
   text-decoration: none;
 }
@@ -78,13 +78,15 @@ form .row input::placeholder{
   font-size: 20px;
   font-weight: 500;
   padding-left: 0px;
-  background: #16a085;
+  border-radius: 4px;
+  background: cornflowerblue;
   border: 1px solid #16a085;
   cursor: pointer;
 }
 form .button input:hover{
   background: #12876f;
 }
+
 .wrapper form .signup-link{
   text-align: center;
   margin-top: 20px;

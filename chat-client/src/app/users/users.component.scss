@@ -1,0 +1,41 @@
+.users-container {
+    height: 725px;
+    border-radius: 15px !important;
+    background-color: cornflowerblue !important;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    p {
+        font-weight: bolder;
+        font-size: 30px;
+        text-decoration: underline;
+    }
+
+    .user {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+        width: 90%;
+        margin-top: 10px;
+
+        img {
+            width: 100px;
+            border: 2px greenyellow solid;
+            border-radius: 50%;
+        }
+    }
+
+    .user:hover {
+        color: black;
+        text-decoration: underline;
+        cursor: pointer;
+        border: 1px black solid;
+        border-radius: 5px;
+    }
+}

@@ -1,0 +1,59 @@
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+
+    .tool-bar {
+        mat-toolbar {
+            background-color: cornflowerblue;
+            color: white;
+        }
+
+        nav {
+            background: cornflowerblue;
+            height: 80px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            button {
+                float: right;
+                margin-right: 20px;
+                color: white;
+                font-size: 17px;
+                padding: 7px 13px;
+                border-radius: 5px;
+                background: cornflowerblue;
+            }
+        }
+    }
+
+    label.logo {
+        color: white;
+        font-size: 35px;
+        line-height: 80px;
+        padding: 0 100px;
+        font-weight: bold;
+    }
+
+    .container {
+        width: 90%;
+        display: grid;
+        gap: 20px;
+        grid-template-columns: 1fr 4fr;
+        grid-area: "users" "chats";
+        margin-top: 30px;
+
+        .users {
+            grid-template: users;
+        }
+
+        .chats {
+            grid-template: chats;
+        }
+    }
+}

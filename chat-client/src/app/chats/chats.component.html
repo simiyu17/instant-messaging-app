@@ -1,18 +1,12 @@
-<div class="component">
-    <div class="container-fluid h-100">
-      <div class="row justify-content-center h-100">
-        <div class="card-footer"></div>
-      </div>
-    </div>
-    <div class="col-md-8 col-xl-6 chat">
+   
       <div class="card">
         <div class="card-header msg_head">
           <div class="d-flex bd-highlight">
-            <div class="img_cont">
+            <div *ngIf="haveOtherUser" class="img_cont">
               <img [src]="profile_img" class="rounded-circle user_img" />
             </div>
             <div class="user_info">
-              <span>Chat con {{ otherUser?.name }}</span>
+              <span> {{ chatTitle }}</span>
             </div>
           </div>
         </div>
@@ -56,13 +50,8 @@
           </div>
           <!--messages - end-->
         </div>
-        <div class="card-footer">
+        <div class="card-footer" *ngIf="haveOtherUser">
           <div class="input-group">
-            <div class="input-group-append">
-              <span class="input-group-text attach_btn"
-                ><i class="fas fa-paperclip"></i
-              ></span>
-            </div>
             <textarea
               [formControl]="newMessage"
               name=""
@@ -77,5 +66,4 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
+   

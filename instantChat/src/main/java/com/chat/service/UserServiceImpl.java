@@ -57,9 +57,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto markAsConnect(UserDto user) throws UserNotFoundException {
         User dbUser = userRepository.getUserByUserName(user.getUserName());
-            if (dbUser.isConnected()) {
-                throw new UserNotFoundException("This user is already connected: " + dbUser.getUserName());
-            }
             dbUser.setConnected(true);
             return userMapper.fromEntity(dbUser);
     }

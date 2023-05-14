@@ -2,8 +2,6 @@ import { AfterViewChecked, Component, ElementRef, OnInit } from '@angular/core';
 import { User } from '../model/User';
 import { FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../service/user.service';
 import { ChatMessage } from '../model/ChatMessage';
 import { ChatService } from '../service/chat.service';
 import * as Stomp from 'stompjs';
@@ -11,24 +9,25 @@ import * as SockJS from 'sockjs-client';
 import { GlobalService } from '../service/global.service';
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  selector: 'app-chats',
+  templateUrl: './chats.component.html',
+  styleUrls: ['./chats.component.scss']
 })
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatsComponent implements OnInit, AfterViewChecked {
 
   profile_img = '/assets/profile.jpg';
   otherUser?: User = JSON.parse(window.sessionStorage.getItem("other_user")!)
+  haveOtherUser?: boolean = this.otherUser ? true : false;
+  chatTitle: string = this.haveOtherUser ? `${this.otherUser?.name}` : 'Select user to with';
   thisUser: User = JSON.parse(window.sessionStorage.getItem('user')!);
   channelName?: string = window.sessionStorage.getItem('channel_name')!;
   socket?: WebSocket;
   stompClient?: Stomp.Client;
   newMessage = new FormControl('');
   messages?: Observable<Array<ChatMessage>>;
+  public loader: number = 0;
 
   constructor(
-    private route: ActivatedRoute,
-    private userService: UserService,
     private chatService: ChatService,
     private gs: GlobalService,
     private el: ElementRef) { }
@@ -97,8 +96,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     return date;
   }
 
-  logout() {
-    window.sessionStorage.clear();
+  reload(): void {
+    this.loader++;
   }
 
 }

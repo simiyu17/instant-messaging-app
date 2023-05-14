@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { ChatComponent } from './chat/chat.component';
-import { MainComponent } from './main/main.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
-  {path: 'home', component: MainComponent},
-  {path: 'chats', component: ChatComponent},
+  {path: 'home', component: HomeComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'}
 ];
 
