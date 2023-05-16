@@ -31,7 +31,11 @@ export class LoginComponent {
         this.router.navigate(['home']);
       },
       error: (error) =>{
+        console.log(error);
       this.msg = "Unable to login";
+      if(error.error.message){
+        this.msg = error.error.message;
+      }
       alert(this.msg);
       window.sessionStorage.clear();
       }
@@ -47,6 +51,9 @@ export class LoginComponent {
       error: (error) =>{
         console.log(error);
         this.msg = "Unable to signup!!";
+        if(error.error.message){
+          this.msg = error.error.message;
+        }
       alert(this.msg);
       window.sessionStorage.clear();
       }

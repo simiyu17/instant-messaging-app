@@ -8,6 +8,7 @@ import com.chat.exception.UserNotFoundException;
 import com.chat.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -23,17 +25,14 @@ public class UserServiceImpl implements UserService{
     private final UserRepositoryWrapper userRepository;
     private final UserMapper userMapper;
 
+    @Transactional
     @Override
     public UserDto saveUser(UserDto userDto) {
-        try {
-            return this.userMapper.fromEntity(this.userRepository.saveNewUser(userDto));
-        }catch (final JpaSystemException | DataIntegrityViolationException dve) {
-            handleException(dve);
-        } catch (final PersistenceException dve) {
-            Throwable throwable = ExceptionUtils.getRootCause(dve.getCause());
-            handleException((Exception) throwable);
+        var existingUser = this.userRepository.getUserOrNullByUserName(userDto.getUserName());
+        if (Objects.nonNull(existingUser)){
+            throw new DuplicateUserNameException("Username already in use by another user!!");
         }
-        return null;
+            return this.userMapper.fromEntity(this.userRepository.saveNewUser(userDto));
     }
 
 
@@ -75,10 +74,5 @@ public class UserServiceImpl implements UserService{
         dbUser.setConnected(false);
         return userMapper.fromEntity(dbUser);
     }
-    private void handleException(final Exception ex){
-        var message = ex.getMessage();
-        if (message.contains("UNIGUE_USERNAME")){
-            throw new DuplicateUserNameException("Username already in use by another user!!");
-        }
-    }
+
 }

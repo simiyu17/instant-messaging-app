@@ -11,8 +11,6 @@ import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './users/users.component';
 import { ChatsComponent } from './chats/chats.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -31,8 +29,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     MatToolbarModule,
     BrowserAnimationsModule,
-    MatIconModule,
-    MatButtonModule
   ],
   providers: [httpInterceptorProvider],
   bootstrap: [AppComponent]

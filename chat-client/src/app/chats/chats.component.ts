@@ -61,7 +61,7 @@ export class ChatsComponent implements OnInit, AfterViewChecked {
         '/topic/messages/' + this.channelName,
         (response) => {
           //func = what to do when client receives data (messages)
-          console.log('Fuck==='+response)
+          console.log('Fuck===' + response)
           this.loadChat();
         }
       );
@@ -84,16 +84,19 @@ export class ChatsComponent implements OnInit, AfterViewChecked {
   }
 
   loadChat() {
-    this.chatService.getMessagesByChatName(this.channelName!).subscribe(data => {
-      let mgs: Array<ChatMessage> = data;
-      mgs.sort((a, b) => (a.id > b.id) ? 1 : -1)
-      this.messages = of(mgs);
-    })
-    console.log(this.messages);
+    if (this.channelName) {
+      this.chatService.getMessagesByChatName(this.channelName!).subscribe(data => {
+        let mgs: Array<ChatMessage> = data;
+        mgs.sort((a, b) => (a.id > b.id) ? 1 : -1)
+        this.messages = of(mgs);
+      })
+      console.log(this.messages);
+    }
   }
 
   whenWasItPublished(date: string) {
-    return date;
+    let d = new Date(date);
+    return '';
   }
 
   reload(): void {

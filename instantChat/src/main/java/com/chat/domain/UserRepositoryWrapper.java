@@ -29,6 +29,10 @@ public class UserRepositoryWrapper {
         return this.userRepository.findByUserName(userName).orElseThrow(UserNotFoundException::new);
     }
 
+    public User getUserOrNullByUserName(String userName){
+        return this.userRepository.findByUserName(userName).orElse(null);
+    }
+
     public List<User> getAllUsers(){
         return this.userRepository.findAll();
     }

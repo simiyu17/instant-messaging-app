@@ -1,0 +1,50 @@
+---
+version: '3.8'
+
+services:
+  chat-web-app:
+    build:
+      context: chat-client
+      dockerfile: Dockerfile
+    networks:
+      - chat-app-net
+    ports:
+      - '4200:80'
+    environment:
+      - CHAT_API_URL=http://localhost:8080
+    depends_on:
+      - chat-api
+  chat-api:
+    container_name: chat_backend
+    build: 
+      context: instantChat
+      dockerfile: Dockerfile
+    restart: on-failure
+    networks:
+      - chat-app-net
+    environment:
+      - FROND_END_URL=http://localhost:4200
+      - POSTGRES_HOST=postgres_db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DATABASE=chat_db
+    depends_on:
+      - postgres
+    ports:
+      - 8080:8080
+  postgres:
+    container_name: postgres_db
+    image: postgres:15.1-alpine
+    restart: always
+    networks:
+      - chat-app-net
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=chat_db
+    ports:
+      - 5430:5432
+
+networks:
+  chat-app-net:
+    driver: bridge
+
