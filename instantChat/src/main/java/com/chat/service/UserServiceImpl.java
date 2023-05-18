@@ -6,33 +6,35 @@ import com.chat.dto.UserDto;
 import com.chat.exception.DuplicateUserNameException;
 import com.chat.exception.UserNotFoundException;
 import com.chat.mapper.UserMapper;
+import com.chat.security.CurrentUserDetails;
+import com.chat.security.JwtTokenUtil;
+import com.chat.security.SecurityConstants;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepositoryWrapper userRepository;
     private final UserMapper userMapper;
+    private final AuthenticationManager authenticationManager;
+    private final CurrentUserDetails currentUserDetails;
 
     @Transactional
     @Override
     public UserDto saveUser(UserDto userDto) {
         var existingUser = this.userRepository.getUserOrNullByUserName(userDto.getUserName());
-        if (Objects.nonNull(existingUser)){
+        if (Objects.nonNull(existingUser)) {
             throw new DuplicateUserNameException("Username already in use by another user!!");
         }
-            return this.userMapper.fromEntity(this.userRepository.saveNewUser(userDto));
+        return this.userMapper.fromEntity(this.userRepository.saveNewUser(userDto));
     }
 
 
@@ -55,9 +57,13 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public UserDto markAsConnect(UserDto user) throws UserNotFoundException {
+        final var userDetails = currentUserDetails.loadUserByUsername(user.getUserName());
         User dbUser = userRepository.getUserByUserName(user.getUserName());
-            dbUser.setConnected(true);
-            return userMapper.fromEntity(dbUser);
+        this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDetails, SecurityConstants.DEFAULT_PASSWORD, userDetails.getAuthorities()));
+        var userDto = userMapper.fromEntity(dbUser);
+        userDto.setAuthToken(JwtTokenUtil.createToken(dbUser));
+        dbUser.setConnected(true);
+        return userDto;
     }
 
     @Transactional

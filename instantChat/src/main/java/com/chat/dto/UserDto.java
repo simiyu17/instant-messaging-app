@@ -13,11 +13,14 @@ public class UserDto implements Serializable {
     private String name;
     private String userName;
     private boolean connected;
+    private String authToken;
 
-    public UserDto(String name, String userName) {
+    public UserDto(String name, String userName, String authToken) {
         this.name = name;
         this.userName = userName;
+        this.authToken = authToken;
     }
+
 
 
 }

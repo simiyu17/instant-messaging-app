@@ -3,6 +3,7 @@ package com.chat.exception;
 import com.chat.dto.ApiErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,6 +17,12 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiErrorMessage> defaultException(Exception ex, WebRequest request) {
         return new ResponseEntity<>(new ApiErrorMessage(false, ex.getMessage(), HttpStatus.NOT_FOUND.value(), request.getDescription(false)), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({ AuthenticationException.class })
+    public ResponseEntity<ApiErrorMessage> handleAuthenticationException(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(new ApiErrorMessage(false, ex.getMessage(), HttpStatus.UNAUTHORIZED.value(), request.getDescription(false)), HttpStatus.UNAUTHORIZED);
+
     }
 
     @ExceptionHandler(value = {UserNotFoundException.class})

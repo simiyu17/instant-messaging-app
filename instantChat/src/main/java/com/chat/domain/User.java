@@ -1,10 +1,12 @@
 package com.chat.domain;
 
 import com.chat.dto.UserDto;
+import com.chat.security.SecurityConstants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -18,6 +20,7 @@ public class User extends BaseEntity {
 
     @Column(name = "user_name")
     private String userName;
+    private String password;
     private boolean connected;
 
     @JsonIgnore
@@ -26,13 +29,14 @@ public class User extends BaseEntity {
 
     private User(){}
 
-    private User(String name,  String userName) {
+    private User(String name,  String userName, String password) {
         this.name = name;
         this.userName = userName;
+        this.password = password;
     }
 
-    public static User createUser(UserDto userDto){
-        return new User(userDto.getName(), userDto.getUserName());
+    public static User createUser(UserDto userDto, PasswordEncoder encoder){
+        return new User(userDto.getName(), userDto.getUserName(), encoder.encode(SecurityConstants.DEFAULT_PASSWORD));
     }
 
     public void setConnected(Boolean connected) {
