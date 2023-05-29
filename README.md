@@ -1,7 +1,7 @@
 # Instant Messaging App
 Sample instant messaging application using java spring back-end and Angular front-end 
 
-[<img src="chats.jpg" alt="Sample Angular Spring Boot Chat"  />]
+[<img src="chats.png" alt="Sample Angular Spring Boot Chat"  />]
 
 ## How to run
 
