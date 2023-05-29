@@ -16,11 +16,11 @@ import { GlobalService } from '../service/global.service';
 export class ChatsComponent implements OnInit, AfterViewChecked {
 
   profile_img = '/assets/profile.jpg';
-  otherUser?: User = JSON.parse(window.sessionStorage.getItem("other_user")!)
-  haveOtherUser?: boolean = this.otherUser ? true : false;
+  otherUser: User = this.gs.userIamChattingWith();
+  haveOtherUser: boolean = this.otherUser ? true : false;
   chatTitle: string = this.haveOtherUser ? `${this.otherUser?.name}` : 'Select user to with';
-  thisUser: User = JSON.parse(window.sessionStorage.getItem('user')!);
-  channelName?: string = window.sessionStorage.getItem('channel_name')!;
+  thisUser: User = this.gs.currentUser();
+  channelName: string = this.gs.currentChatChannel();
   socket?: WebSocket;
   stompClient?: Stomp.Client;
   newMessage = new FormControl('');
@@ -56,12 +56,10 @@ export class ChatsComponent implements OnInit, AfterViewChecked {
 
     this.stompClient.connect({}, (frame) => {
       //func = what to do when connection is established
-      console.log('connected to: ' + frame);
       this.stompClient!.subscribe(
         '/topic/messages/' + this.channelName,
         (response) => {
           //func = what to do when client receives data (messages)
-          console.log('Fuck===' + response)
           this.loadChat();
         }
       );

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { ChatService } from '../service/chat.service';
-import { Router } from '@angular/router';
 import { User } from '../model/User';
 import { filter, map } from 'rxjs';
+import { GlobalService } from '../service/global.service';
 
 @Component({
   selector: 'app-users',
@@ -14,13 +14,12 @@ export class UsersComponent implements OnInit{
 
   profile_img = '/assets/profile.jpg';
   public alluser: any = [];
-  check = window.sessionStorage.getItem('user');
-  currentUser: any = JSON.parse(this.check!);
-  currentUserName: any = (JSON.parse(this.check!)).name;
+  currentUser: any = this.gs.currentUser();
+  currentUserName: any = this.currentUser.name;
   chatId: any = 0;
   public chatData: any = [];
 
-  constructor(private router: Router, private userService: UserService, private chatService: ChatService) { }
+  constructor(private userService: UserService, private chatService: ChatService, private gs: GlobalService) { }
 
   ngOnInit(): void {
     let all = setInterval(() =>{ 
@@ -36,7 +35,7 @@ export class UsersComponent implements OnInit{
 
 
   goToChat(otherChatUser: User) {
-    this.chatService.createChatForTwoUsers(JSON.parse(window.sessionStorage.getItem("user")!), otherChatUser).subscribe({
+    this.chatService.createChatForTwoUsers(this.currentUser, otherChatUser).subscribe({
       next: (data) => {
         this.chatId = data.id;
         window.sessionStorage.setItem("chat_id", this.chatId);

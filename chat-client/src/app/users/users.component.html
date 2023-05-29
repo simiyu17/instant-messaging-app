@@ -3,7 +3,7 @@
     <p>Users</p>
     <div class="user" *ngFor="let presentation of alluser" class="user col-2" (click)="goToChat(presentation)">
         <img [src]="profile_img" alt="">
-        <div *ngIf="presentation.userName != check">
+        <div>
             {{presentation.userName}}
           </div>
     </div>

@@ -13,7 +13,7 @@ export class LoginComponent {
 
   msg!: string;
   userloginForm!: FormGroup;
-  constructor(private fb: FormBuilder, private us: UserService,private gs: GlobalService, private router: Router) { 
+  constructor(private fb: FormBuilder, private us: UserService, private gs: GlobalService, private router: Router) {
     this.createUserloginForm();
   }
 
@@ -24,38 +24,35 @@ export class LoginComponent {
     });
   }
 
-  login(){
+  login() {
     this.us.login(this.userloginForm.value).subscribe({
-      next: (res) =>{
+      next: (res) => {
         window.sessionStorage.setItem('user', JSON.stringify(res));
         this.router.navigate(['home']);
       },
-      error: (error) =>{
+      error: (error) => {
         console.log(error);
-      this.msg = "Unable to login";
-      if(error.error.message){
-        this.msg = error.error.message;
-      }
-      alert(this.msg);
-      window.sessionStorage.clear();
+        this.msg = "Unable to login";
+        if (error.error.message) {
+          this.msg = error.error.message;
+        }
+        alert(this.msg);
       }
     });
   }
 
-  signup(){
+  signup() {
     this.us.register(this.userloginForm.value).subscribe({
-      next: (res) =>{
-        console.log(res);
+      next: (res) => {
         this.login();
       },
-      error: (error) =>{
+      error: (error) => {
         console.log(error);
         this.msg = "Unable to signup!!";
-        if(error.error.message){
+        if (error.error.message) {
           this.msg = error.error.message;
         }
-      alert(this.msg);
-      window.sessionStorage.clear();
+        alert(this.msg);
       }
     });
   }
